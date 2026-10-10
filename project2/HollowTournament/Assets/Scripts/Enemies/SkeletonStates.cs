@@ -11,7 +11,7 @@ namespace HollowTournament.Enemies.Skeleton
         public void Enter(SkeletonEnemy s)
         {
             _timer = 0f;
-            s.Agent.isStopped = true;
+            if (s.AgentReady) s.Agent.isStopped = true;
             s.animator?.SetBool("Moving", false);
         }
 
@@ -31,14 +31,14 @@ namespace HollowTournament.Enemies.Skeleton
     {
         public void Enter(SkeletonEnemy s)
         {
-            s.Agent.isStopped = false;
+            if (s.AgentReady) s.Agent.isStopped = false;
             s.animator?.SetBool("Moving", true);
         }
 
         public void Tick(SkeletonEnemy s, float dt)
         {
             if (s.target == null) return;
-            s.Agent.SetDestination(s.target.position);
+            if (s.AgentReady) s.Agent.SetDestination(s.target.position);
             float distance = Vector3.Distance(s.transform.position, s.target.position);
             if (distance <= s.approachStopDistance)
                 s.Machine.ChangeState<Circle>();
@@ -57,7 +57,7 @@ namespace HollowTournament.Enemies.Skeleton
         public void Enter(SkeletonEnemy s)
         {
             s.RearmShield();
-            s.Agent.isStopped = false;
+            if (s.AgentReady) s.Agent.isStopped = false;
             _decisionTimer = Random.Range(s.decisionIntervalMin, s.decisionIntervalMax);
             _direction = Random.value > 0.5f ? 1f : -1f;
             Vector3 offset = s.transform.position - s.target.position;
@@ -78,7 +78,7 @@ namespace HollowTournament.Enemies.Skeleton
             _angle += s.circleSpeed * dt * _direction;
             Vector3 orbit = new Vector3(Mathf.Cos(_angle * Mathf.Deg2Rad), 0f, Mathf.Sin(_angle * Mathf.Deg2Rad)) * s.circleRadius;
             Vector3 dest = s.target.position + orbit;
-            s.Agent.SetDestination(dest);
+            if (s.AgentReady) s.Agent.SetDestination(dest);
 
             Vector3 faceDir = s.target.position - s.transform.position;
             faceDir.y = 0f;
@@ -105,7 +105,7 @@ namespace HollowTournament.Enemies.Skeleton
         public void Enter(SkeletonEnemy s)
         {
             _timer = 0f;
-            s.Agent.isStopped = true;
+            if (s.AgentReady) s.Agent.isStopped = true;
             s.animator?.SetTrigger("WindUp");
         }
 
@@ -195,7 +195,7 @@ namespace HollowTournament.Enemies.Skeleton
         public void Enter(SkeletonEnemy s)
         {
             _timer = 0f;
-            s.Agent.isStopped = true;
+            if (s.AgentReady) s.Agent.isStopped = true;
             s.animator?.SetTrigger("Staggered");
         }
 
@@ -213,7 +213,7 @@ namespace HollowTournament.Enemies.Skeleton
     {
         public void Enter(SkeletonEnemy s)
         {
-            s.Agent.isStopped = true;
+            if (s.AgentReady) s.Agent.isStopped = true;
             s.Agent.enabled = false;
             s.animator?.SetTrigger("Dead");
             // skeleton "rattles apart": goofy ragdoll/skull-pop handled by a listener on OnSkullPopped

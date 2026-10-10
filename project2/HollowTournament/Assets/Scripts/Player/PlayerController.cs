@@ -1,6 +1,7 @@
 using UnityEngine;
 using HollowTournament.Core;
 using HollowTournament.Combat;
+using HollowTournament.CameraSystem;
 
 namespace HollowTournament.Player
 {
@@ -38,6 +39,7 @@ namespace HollowTournament.Player
         public WeaponHitbox weaponHitbox;
         public SwingDirectionReader swingReader;
         public Transform lockOnTarget;
+        public LockOnCamera lockOnCamera;
 
         public GuardComponent Guard { get; private set; }
         public StaminaSystem Stamina { get; private set; }
@@ -103,6 +105,9 @@ namespace HollowTournament.Player
             else if (Input.GetMouseButtonUp(1) && Machine.Current is Player.Block) Machine.ChangeState<Player.Locomotion>();
 
             if (Input.GetKeyDown(KeyCode.E)) Machine.ChangeState<Player.Kick>();
+
+            if (Input.GetKeyDown(KeyCode.Tab)) lockOnCamera?.ToggleLockOn(Camera.main);
+            lockOnTarget = lockOnCamera != null ? lockOnCamera.CurrentTarget : null;
         }
 
         public void ReadMoveInput(Vector2 input) => _moveInput = input;

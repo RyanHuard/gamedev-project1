@@ -15,10 +15,12 @@ namespace HollowTournament.CameraSystem
         [SerializeField] private Transform player;
         [SerializeField] private float maxLockOnDistance = 15f;
         [SerializeField] private float lockOnConeDegrees = 60f;
-        [SerializeField] private LayerMask targetLayers;
+        [SerializeField] private LayerMask targetLayers = ~0;
 
         public Transform CurrentTarget { get; private set; }
         public System.Action<Transform> OnTargetChanged;
+
+        public void SetPlayer(Transform p) => player = p;
 
         public void ToggleLockOn(UnityEngine.Camera referenceCamera)
         {

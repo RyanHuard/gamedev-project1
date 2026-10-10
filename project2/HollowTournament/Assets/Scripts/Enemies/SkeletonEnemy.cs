@@ -50,6 +50,8 @@ namespace HollowTournament.Enemies
         public bool ShieldBroken { get; private set; }
 
         public NavMeshAgent Agent { get; private set; }
+        /// <summary>Agents placed off-mesh (e.g. before a NavMesh is baked, or spawned off its bounds) throw on isStopped/SetDestination; gate every Agent call behind this.</summary>
+        public bool AgentReady => Agent != null && Agent.enabled && Agent.isOnNavMesh;
         public GuardComponent Guard { get; private set; }
         public StaminaSystem Stamina { get; private set; }
         public HealthComponent Health { get; private set; }
